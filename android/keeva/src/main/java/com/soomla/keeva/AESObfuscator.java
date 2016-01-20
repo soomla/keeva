@@ -63,13 +63,9 @@ public class AESObfuscator {
      */
     public AESObfuscator(byte[] salt, String applicationId, String deviceId, String sec) {
         byte[] passwordData = null;
-        if (sec.equals("SOOMLA_SEC")) {
-            Utils.LogError(TAG, "You didn't provide a SOOMLA secret!!! Stopping now!");
-
-            // TODO: Figure out how to terminate the app
-//            android.os.Process.killProcess(android.os.Process.myPid());
-//            System.exit(1);
-        }
+//      if (TextUtils.isEmpty(sec)) {
+//          Utils.LogError(TAG, "You didn't provide a secret!!! Things may work poorly.");
+//      }
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance(KEYGEN_ALGORITHM);
             KeySpec keySpec =

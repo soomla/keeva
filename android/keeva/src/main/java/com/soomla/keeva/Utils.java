@@ -73,7 +73,7 @@ public class Utils {
             // This is a fallback in case the device id cannot be retrieved on the device
             // (happened on some devices !)
             Utils.LogError("KEEVA ObscuredSharedPreferences",
-                    "Couldn't fetch ANDROID_ID. Using generated SOOMLA id.");
+                    "Couldn't fetch ANDROID_ID. Using generated id.");
             androidId = generateKeevaId(context);
         }
 
