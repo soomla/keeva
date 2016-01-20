@@ -45,9 +45,9 @@ public class Keeva {
         mStorageName = storageName;
         mSecret = secret;
         mKvDatabase = new KeevaDatabase(mAppContext, storageName);
-        mObfuscator = new AESObfuscator(Config.obfuscationSalt,
+        mObfuscator = new AESObfuscator(KeevaConfig.obfuscationSalt,
                 mAppContext.getPackageName(),
-                Utils.deviceId(mAppContext),
+                KeevaUtils.deviceId(mAppContext),
                 mSecret);
     }
 
@@ -58,7 +58,7 @@ public class Keeva {
      * This method is mainly used for testing.
      */
     public void purgeStorage() {
-        Utils.LogDebug(TAG, "purging database" + (mStorageName != null ? " in storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "purging database" + (mStorageName != null ? " in storage: " + mStorageName : ""));
 
         mKvDatabase.purgeDatabaseEntries(mAppContext);
     }
@@ -69,7 +69,7 @@ public class Keeva {
      * @param key is the key in the key-val pair.
      */
     public void remove(String key) {
-        Utils.LogDebug(TAG, "deleting " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "deleting " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
 
         key = mObfuscator.obfuscateString(key);
 
@@ -84,7 +84,7 @@ public class Keeva {
      */
     public void put(String key, String val) {
 
-        Utils.LogDebug(TAG, "setting " + val + " for key: " + key + (mStorageName != null ? " in storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "setting " + val + " for key: " + key + (mStorageName != null ? " in storage: " + mStorageName : ""));
 
         key = mObfuscator.obfuscateString(key);
         val = mObfuscator.obfuscateString(val);
@@ -99,7 +99,7 @@ public class Keeva {
      * @return the value for the given key
      */
     public String get(String key) {
-        Utils.LogDebug(TAG, "trying to fetch a value for key: " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "trying to fetch a value for key: " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
         key = mObfuscator.obfuscateString(key);
 
         String val = mKvDatabase.getKeyVal(key);
@@ -108,11 +108,11 @@ public class Keeva {
             try {
                 val = mObfuscator.unobfuscateToString(val);
             } catch (AESObfuscator.ValidationException e) {
-                Utils.LogError(TAG, e.getMessage());
+                KeevaUtils.LogError(TAG, e.getMessage());
                 val = "";
             }
 
-            Utils.LogDebug(TAG, "the fetched value is " + val);
+            KeevaUtils.LogDebug(TAG, "the fetched value is " + val);
         }
         return val;
     }
@@ -124,7 +124,7 @@ public class Keeva {
      */
     public List<String> getOnlyEncryptedKeys() {
 
-        Utils.LogDebug(TAG, "trying to fetch all keys" + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "trying to fetch all keys" + (mStorageName != null ? " from storage: " + mStorageName : ""));
 
         List<String> encryptedKeys = mKvDatabase.getAllKeys();
         List<String> resultKeys = new ArrayList<String>();
@@ -134,9 +134,9 @@ public class Keeva {
                 String unencryptedKey = mObfuscator.unobfuscateToString(encryptedKey);
                 resultKeys.add(unencryptedKey);
             } catch (AESObfuscator.ValidationException e) {
-                Utils.LogDebug(TAG, e.getMessage());
+                KeevaUtils.LogDebug(TAG, e.getMessage());
             } catch (RuntimeException e) {
-                Utils.LogError(TAG, e.getMessage());
+                KeevaUtils.LogError(TAG, e.getMessage());
             }
         }
 
@@ -150,7 +150,7 @@ public class Keeva {
      * @return number of key-vals according the the given query
      */
     public int countForNonEncryptedQuery(String query) {
-        Utils.LogDebug(TAG, "trying to fetch count for query: " + query + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "trying to fetch count for query: " + query + (mStorageName != null ? " from storage: " + mStorageName : ""));
 
         return mKvDatabase.getQueryCount(query);
     }
@@ -163,7 +163,7 @@ public class Keeva {
      */
     public String oneForNonEncryptedQuery(String query) {
 
-        Utils.LogDebug(TAG, "trying to fetch one for query: " + query + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "trying to fetch one for query: " + query + (mStorageName != null ? " from storage: " + mStorageName : ""));
 
         String val = mKvDatabase.getQueryOne(query);
         if (val != null && !TextUtils.isEmpty(val)) {
@@ -171,7 +171,7 @@ public class Keeva {
                 val = mObfuscator.unobfuscateToString(val);
                 return val;
             } catch (AESObfuscator.ValidationException e) {
-                Utils.LogError(TAG, e.getMessage());
+                KeevaUtils.LogError(TAG, e.getMessage());
             }
         }
 
@@ -196,7 +196,7 @@ public class Keeva {
      * @return hashmap of key-val pairs
      */
     public HashMap<String, String> getForNonEncryptedQuery(String query, int limit) {
-        Utils.LogDebug(TAG, "trying to fetch values for query: " + query +
+        KeevaUtils.LogDebug(TAG, "trying to fetch values for query: " + query +
                 (limit > 0 ? " with limit: " + limit : "") +
                 (mStorageName != null ? " from storage: " + mStorageName : ""));
 
@@ -209,12 +209,12 @@ public class Keeva {
                     val = mObfuscator.unobfuscateToString(val);
                     results.put(key, val);
                 } catch (AESObfuscator.ValidationException e) {
-                    Utils.LogError(TAG, e.getMessage());
+                    KeevaUtils.LogError(TAG, e.getMessage());
                 }
             }
         }
 
-        Utils.LogDebug(TAG, "fetched " + results.size() + " results");
+        KeevaUtils.LogDebug(TAG, "fetched " + results.size() + " results");
 
         return results;
     }
@@ -227,7 +227,7 @@ public class Keeva {
      */
     public String getForNonEncryptedKey(String key) {
 
-        Utils.LogDebug(TAG, "trying to fetch a value for key: " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "trying to fetch a value for key: " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
 
         String val = mKvDatabase.getKeyVal(key);
 
@@ -235,11 +235,11 @@ public class Keeva {
             try {
                 val = mObfuscator.unobfuscateToString(val);
             } catch (AESObfuscator.ValidationException e) {
-                Utils.LogError(TAG, e.getMessage());
+                KeevaUtils.LogError(TAG, e.getMessage());
                 val = "";
             }
 
-            Utils.LogDebug(TAG, "the fetched value is " + val);
+            KeevaUtils.LogDebug(TAG, "the fetched value is " + val);
         }
         return val;
     }
@@ -250,7 +250,7 @@ public class Keeva {
      * @param key the key to indicate which pair to delete
      */
     public void removeForNonEncryptedKey(String key) {
-        Utils.LogDebug(TAG, "deleting " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "deleting " + key + (mStorageName != null ? " from storage: " + mStorageName : ""));
 
         mKvDatabase.deleteKeyVal(key);
     }
@@ -263,7 +263,7 @@ public class Keeva {
      */
     public void putForNonEncryptedKey(String key, String val) {
 
-        Utils.LogDebug(TAG, "setting " + val + " for key: " + key + (mStorageName != null ? " in storage: " + mStorageName : ""));
+        KeevaUtils.LogDebug(TAG, "setting " + val + " for key: " + key + (mStorageName != null ? " in storage: " + mStorageName : ""));
 
         val = mObfuscator.obfuscateString(val);
         mKvDatabase.setKeyVal(key, val);

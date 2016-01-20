@@ -48,7 +48,7 @@ public class KeevaDatabase {
      */
     public KeevaDatabase(Context context, String dbName) {
 
-        if (Config.DB_DELETE){
+        if (KeevaConfig.DB_DELETE){
             context.deleteDatabase(dbName);
         }
 

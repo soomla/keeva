@@ -22,7 +22,7 @@ package com.soomla.keeva;
  * IMPORTANT: Change <code>obfuscationSalt</code> below !!!
  * IMPORTANT: Before releasing your game, set <code>DB_DELETE</code> to false !!!
  */
-public class Config {
+public class KeevaConfig {
 
     //Set to true if you want to print out debug messages
     public static boolean logDebug = false;

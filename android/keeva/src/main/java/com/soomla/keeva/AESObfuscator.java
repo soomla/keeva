@@ -64,7 +64,7 @@ public class AESObfuscator {
     public AESObfuscator(byte[] salt, String applicationId, String deviceId, String sec) {
         byte[] passwordData = null;
 //      if (TextUtils.isEmpty(sec)) {
-//          Utils.LogError(TAG, "You didn't provide a secret!!! Things may work poorly.");
+//          KeevaUtils.LogError(TAG, "You didn't provide a secret!!! Things may work poorly.");
 //      }
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance(KEYGEN_ALGORITHM);
@@ -72,7 +72,7 @@ public class AESObfuscator {
                     new PBEKeySpec((applicationId + deviceId + sec).toCharArray(), salt, 1024, 256);
             passwordData = factory.generateSecret(keySpec).getEncoded();
         } catch (GeneralSecurityException e) {
-            Utils.LogDebug("KEEVA AESObfuscator",
+            KeevaUtils.LogDebug("KEEVA AESObfuscator",
                     "Probably an incompatible device. Trying different approach.");
 
             MessageDigest digester = null;

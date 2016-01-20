@@ -27,7 +27,7 @@ import java.util.UUID;
 /**
  * This class provides Log functions that output debug, warning, or error messages.
  */
-public class Utils {
+public class KeevaUtils {
 
     /**
      * Creates Log Debug message according to given tag and message.
@@ -36,7 +36,7 @@ public class Utils {
      * @param message debug message to output to log
      */
     public static void LogDebug(String tag, String message) {
-        if (Config.logDebug) {
+        if (KeevaConfig.logDebug) {
             Log.d(tag, message);
         }
     }
@@ -72,7 +72,7 @@ public class Utils {
         if (androidId == null) {
             // This is a fallback in case the device id cannot be retrieved on the device
             // (happened on some devices !)
-            Utils.LogError("KEEVA ObscuredSharedPreferences",
+            KeevaUtils.LogError("KEEVA ObscuredSharedPreferences",
                     "Couldn't fetch ANDROID_ID. Using generated id.");
             androidId = generateKeevaId(context);
         }
@@ -93,7 +93,7 @@ public class Utils {
 
     /** Private Members **/
 
-    private static String TAG = "KEEVA Utils"; //used for Log messages
+    private static String TAG = "KEEVA KeevaUtils"; //used for Log messages
 
-	private static final String DB_KEY_SOOMLA_GENERATED_ID = Config.DB_KEY_PREFIX + "generatedid";
+	private static final String DB_KEY_SOOMLA_GENERATED_ID = KeevaConfig.DB_KEY_PREFIX + "generatedid";
 }
