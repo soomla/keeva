@@ -81,7 +81,7 @@ public class KeevaUtils {
     }
 
 	private static String generateKeevaId(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences("keeva.prefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences("store.kv.db", Context.MODE_PRIVATE);
 		String generatedId = sharedPrefs.getString(DB_KEY_SOOMLA_GENERATED_ID, null);
 		if (TextUtils.isEmpty(generatedId)) {
 			generatedId = UUID.randomUUID().toString();
@@ -95,5 +95,5 @@ public class KeevaUtils {
 
     private static String TAG = "KEEVA KeevaUtils"; //used for Log messages
 
-	private static final String DB_KEY_SOOMLA_GENERATED_ID = KeevaConfig.DB_KEY_PREFIX + "generatedid";
+	private static final String DB_KEY_SOOMLA_GENERATED_ID = "soomla.generatedid";
 }

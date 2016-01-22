@@ -48,6 +48,4 @@ public class KeevaConfig {
      */
     public static final boolean DB_DELETE = false;
 
-    public static final String DB_KEY_PREFIX = "soomla.";
-
 }
