@@ -93,7 +93,5 @@ public class KeevaUtils {
 
     /** Private Members **/
 
-    private static String TAG = "KEEVA KeevaUtils"; //used for Log messages
-
 	private static final String DB_KEY_SOOMLA_GENERATED_ID = "soomla.generatedid";
 }
