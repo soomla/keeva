@@ -35,15 +35,6 @@ public class KeevaDatabase {
      * Constructor.
      *
      * @param context global information about the application environment
-     */
-    public KeevaDatabase(Context context) {
-        this(context, Keeva.DEFAULT_DATABASE_NAME);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param context global information about the application environment
      * @param dbName name of the db to use
      */
     public KeevaDatabase(Context context, String dbName) {
@@ -61,15 +52,6 @@ public class KeevaDatabase {
      */
     public synchronized void close() {
         mDatabaseHelper.close();
-    }
-
-    /**
-     * Deletes the database completely!
-     *
-     * @param context global information about the application environment
-     */
-    public void purgeDatabase(Context context) {
-        purgeDatabase(context, Keeva.DEFAULT_DATABASE_NAME);
     }
 
     /**

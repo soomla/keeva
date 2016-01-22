@@ -275,7 +275,6 @@ public class Keeva {
      **/
 
     private static final String TAG = "KEEVA Keeva"; //used for Log Messages
-    public static final String DEFAULT_DATABASE_NAME = "store.kv.db";
 
     private Context mAppContext;
     private AESObfuscator mObfuscator;
