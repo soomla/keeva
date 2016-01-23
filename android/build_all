@@ -3,10 +3,11 @@ set -e
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd $DIR
 
-# filename="SoomlaAndroidCore"
-# rm -rf build/
-# mkdir build
-# ant -buildfile soomla-android-core.xml -Dsoomla.filename="$filename" all
 ./gradlew assembleRelease
+
+rm -rf build
+mkdir build
+
+cp keeva/build/outputs/aar/keeva-release.aar build/
 
 cd - > /dev/null
