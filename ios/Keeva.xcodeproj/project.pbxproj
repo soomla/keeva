@@ -20,7 +20,7 @@
 		A14D13671C53ED450018BD3F /* KeevaConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = A14D13371C5042960018BD3F /* KeevaConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A14D13681C53ED450018BD3F /* KeevaUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A14D13391C5042960018BD3F /* KeevaUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A14D13691C53ED450018BD3F /* FBEncryptorAES.h in Headers */ = {isa = PBXBuildFile; fileRef = A14D133D1C5046A20018BD3F /* FBEncryptorAES.h */; };
-		A14D136A1C53ED450018BD3F /* NSData-Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = A14D133F1C5046A20018BD3F /* NSData-Base64.h */; };
+		A14D136A1C53ED450018BD3F /* NSData-Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = A14D133F1C5046A20018BD3F /* NSData-Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,8 +113,8 @@
 				A14D13671C53ED450018BD3F /* KeevaConfig.h in Headers */,
 				A14D13661C53ED450018BD3F /* KeevaEncryptor.h in Headers */,
 				A14D13681C53ED450018BD3F /* KeevaUtils.h in Headers */,
-				A14D13691C53ED450018BD3F /* FBEncryptorAES.h in Headers */,
 				A14D136A1C53ED450018BD3F /* NSData-Base64.h in Headers */,
+				A14D13691C53ED450018BD3F /* FBEncryptorAES.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
