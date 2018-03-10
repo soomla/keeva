@@ -98,19 +98,20 @@ public class KeevaDatabase {
      * @return a value for the given key
      */
     public synchronized String getKeyVal(String key) {
-        Cursor cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
-						+ "='" + key + "'",
-				null, null, null, null);
+        Cursor cursor = null;
+        try {
+            cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
+                            + "='" + key + "'",
+                    null, null, null, null);
 
-        if (cursor != null && cursor.moveToNext()) {
-            int valColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_VAL);
-            String ret = cursor.getString(valColIdx);
-            cursor.close();
-            return ret;
-        }
-
-        if(cursor != null) {
-        	cursor.close();
+            if (cursor != null && cursor.moveToNext()) {
+                int valColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_VAL);
+                return  cursor.getString(valColIdx);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
         return null;
@@ -130,43 +131,48 @@ public class KeevaDatabase {
     }
 
 	public synchronized HashMap<String, String> getQueryVals(String query, int limit) {
-		query = query.replace('*', '%');
-		Cursor cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
-						+ " LIKE '" + query + "'",
-				null, null, null, null, limit <= 0? null : Integer.toString(limit));
+        Cursor cursor = null;
+        try {
+            query = query.replace('*', '%');
+            cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
+                            + " LIKE '" + query + "'",
+                    null, null, null, null, limit <= 0 ? null : Integer.toString(limit));
 
-		HashMap<String, String> ret = new HashMap<String, String>();
-		while (cursor != null && cursor.moveToNext()) {
-			try {
-				int valColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_VAL);
-				int keyColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_KEY);
-				ret.put(cursor.getString(keyColIdx), cursor.getString(valColIdx));
-			} catch (IllegalArgumentException exx) {
-			}
-		}
-
-		if(cursor != null) {
-			cursor.close();
-		}
-
-		return ret;
+            HashMap<String, String> ret = new HashMap<String, String>();
+            while (cursor != null && cursor.moveToNext()) {
+                try {
+                    int valColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_VAL);
+                    int keyColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_KEY);
+                    ret.put(cursor.getString(keyColIdx), cursor.getString(valColIdx));
+                } catch (IllegalArgumentException exx) {
+                }
+            }
+            return ret;
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
 	}
 
     public synchronized String getQueryOne(String query) {
-        query = query.replace('*', '%');
-        Cursor cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
-                        + " LIKE '" + query + "'",
-                null, null, null, null, "1");
+        Cursor cursor = null;
+        try {
+            query = query.replace('*', '%');
+            cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
+                            + " LIKE '" + query + "'",
+                    null, null, null, null, "1");
 
-        if(cursor != null) {
-            boolean moved = cursor.moveToFirst();
-            if (moved) {
-                int valColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_VAL);
-                String ret = cursor.getString(valColIdx);
-
+            if (cursor != null) {
+                boolean moved = cursor.moveToFirst();
+                if (moved) {
+                    int valColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_VAL);
+                    return cursor.getString(valColIdx);
+                }
+            }
+        } finally {
+            if(cursor != null) {
                 cursor.close();
-
-                return ret;
             }
         }
 //        String ret = null;
@@ -180,20 +186,23 @@ public class KeevaDatabase {
 
         return null;
 
-
     }
 
     public synchronized int getQueryCount(String query) {
-        query = query.replace('*', '%');
-        Cursor cursor = mStoreDB.rawQuery("SELECT COUNT(" + KEYVAL_COLUMN_VAL + ") from " +
-                        KEYVAL_TABLE_NAME + " WHERE " + KEYVAL_COLUMN_KEY + " LIKE '" + query +"'", null);
-        if(cursor != null) {
-            boolean moved = cursor.moveToFirst();
-            if (moved) {
-                int count = cursor.getInt(0);
+        Cursor cursor = null;
+        try {
+            query = query.replace('*', '%');
+            cursor = mStoreDB.rawQuery("SELECT COUNT(" + KEYVAL_COLUMN_VAL + ") from " +
+                    KEYVAL_TABLE_NAME + " WHERE " + KEYVAL_COLUMN_KEY + " LIKE '" + query + "'", null);
+            if (cursor != null) {
+                boolean moved = cursor.moveToFirst();
+                if (moved) {
+                    return cursor.getInt(0);
+                }
+            }
+        } finally {
+            if(cursor != null) {
                 cursor.close();
-
-                return count;
             }
         }
 
@@ -201,23 +210,24 @@ public class KeevaDatabase {
     }
 
     public synchronized List<String> getAllKeys() {
-        Cursor cursor = mStoreDB.query(KEYVAL_TABLE_NAME, new String[] { KEYVAL_COLUMN_KEY },
-                null, null, null, null, null);
-
-        List<String> ret = new ArrayList<String>();
-        while (cursor != null && cursor.moveToNext()) {
-            try {
-                int keyColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_KEY);
-                ret.add(cursor.getString(keyColIdx));
-            } catch (IllegalArgumentException exx) {
+        Cursor cursor = null;
+        try {
+            cursor = mStoreDB.query(KEYVAL_TABLE_NAME, new String[]{KEYVAL_COLUMN_KEY},
+                    null, null, null, null, null);
+            List<String> ret = new ArrayList<String>();
+            while (cursor != null && cursor.moveToNext()) {
+                try {
+                    int keyColIdx = cursor.getColumnIndexOrThrow(KEYVAL_COLUMN_KEY);
+                    ret.add(cursor.getString(keyColIdx));
+                } catch (IllegalArgumentException exx) {
+                }
+            }
+            return ret;
+        } finally {
+            if(cursor != null) {
+                cursor.close();
             }
         }
-
-        if(cursor != null) {
-            cursor.close();
-        }
-
-        return ret;
     }
 
     /**
