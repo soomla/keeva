@@ -48,7 +48,7 @@ static NSString *const SOOMLA_GENERATED_KEY = @"soomlaGeneratedId";
 + (NSString*)deviceId {
     NSString* udid = [[NSUserDefaults standardUserDefaults] stringForKey:@"UDID_SOOMLA"];
     if (!udid || [udid length] == 0) {
-	return [self deviceIdPreferVendor];
+        return [self deviceIdPreferVendor];
     }
     return udid;
 }
@@ -74,7 +74,8 @@ static NSString *const SOOMLA_GENERATED_KEY = @"soomlaGeneratedId";
 
 
 + (NSString*)keyFromSecret:(NSString*)secret {
-    return [secret stringByAppendingString:[KeevaUtils deviceId]];
+    NSString *deviceId = [KeevaUtils deviceId];
+    return [secret stringByAppendingString:deviceId? : @""];
 }
 //
 //+ (NSMutableDictionary*)jsonStringToDict:(NSString*)str {
