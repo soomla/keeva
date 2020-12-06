@@ -93,7 +93,7 @@
                 sqlite3_bind_text(statement, 1, [key UTF8String], -1, SQLITE_TRANSIENT);
                 
                 if(SQLITE_DONE != sqlite3_step(statement)){
-                    NSAssert1(0, @"Error while deleting. '%s'", sqlite3_errmsg(database));
+                    LogError(TAG, ([NSString stringWithFormat:@"Error while deleting. '%s'", sqlite3_errmsg(database)]));
                     sqlite3_reset(statement);
                 }
             }
@@ -120,7 +120,7 @@
             }
             else {
                 if(SQLITE_DONE != sqlite3_step(statement)){
-                    NSAssert1(0, @"Error while purging database. '%s'", sqlite3_errmsg(database));
+                    LogError(TAG, ([NSString stringWithFormat:@"Error while purging database. '%s'", sqlite3_errmsg(database)]));
                     sqlite3_reset(statement);
                 }
             }
@@ -379,7 +379,7 @@
                 sqlite3_bind_text(statement, 2, [key UTF8String], -1, SQLITE_TRANSIENT);
                 
                 if(SQLITE_DONE != sqlite3_step(statement)){
-                    NSAssert1(0, @"Error while updating. '%s'", sqlite3_errmsg(database));
+                    LogError(TAG, ([NSString stringWithFormat:@"Error while updating. '%s'", sqlite3_errmsg(database)]));
                     sqlite3_reset(statement);
                 }
                 else {
@@ -398,7 +398,7 @@
                         }
                         
                         if(SQLITE_DONE != sqlite3_step(statement)){
-                            NSAssert1(0, @"Error while adding item. '%s'", sqlite3_errmsg(database));
+                            LogError(TAG, ([NSString stringWithFormat:@"Error while adding item. '%s'", sqlite3_errmsg(database)]));
                             sqlite3_reset(statement);
                         }
                     }

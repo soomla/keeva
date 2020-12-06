@@ -171,13 +171,14 @@ static NSString *const SOOMLA_GENERATED_KEY = @"soomlaGeneratedId";
 
 + (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {
-    assert([[NSFileManager defaultManager] fileExistsAtPath: [URL path]]);
-
-    NSError *error = nil;
-    BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
-                                  forKey: NSURLIsExcludedFromBackupKey error: &error];
-    if(!success){
-        NSLog(@"Error excluding %@ from backup %@", [URL lastPathComponent], error);
+    BOOL success = NO;
+    if ([[NSFileManager defaultManager] fileExistsAtPath: [URL path]]) {
+        NSError *error = nil;
+        success = [URL setResourceValue: [NSNumber numberWithBool: YES]
+                                 forKey: NSURLIsExcludedFromBackupKey error: &error];
+        if(!success){
+            NSLog(@"Error excluding %@ from backup %@", [URL lastPathComponent], error);
+        }
     }
     return success;
 }
